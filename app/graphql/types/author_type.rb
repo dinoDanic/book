@@ -19,4 +19,23 @@ class Types::AuthorType < Types::BaseObject
 
   field :publication_years, [Int], null: false
 
+  field :errors[Types::ErrorType], null: true
+
+  def errors 
+    object.errors.map { |e| {first_name: e.attributes, errors: object.errors[e.attribute]}}
+  end
+
+ 
+
+end
+
+class Types::AuthorInputType < GraphQL::Schema::InputObject
+  graphql_name "AuthorInputType"
+  description "All the attributes needed to create/update an authro"
+  
+  argument :id, ID, required: false
+  argument :first_name, String, required: false
+  argument :last_name, String, required: false
+  argument :yob, Int, required: false
+  argument :is_alive, Boolean, required: false
 end
